@@ -28,7 +28,7 @@ class ProfilePhoto extends StatelessWidget {
             )
           : ClipOval(
               child: Image.file(
-                File(_profileImage!.path),
+                File(_profileImage.path),
                 width: 150,
                 height: 150,
                 fit: BoxFit.cover,

@@ -69,7 +69,6 @@ class ProductStream {
   }
 
   Stream<List<Shop>> getNearbyShops(String? userLocality) {
-    print("Enterd the stream--- $userLocality");
     String trimmedLocality = userLocality!.trim();
     if (trimmedLocality == 'Belgaum' ||
         trimmedLocality == 'Belgaum(Belagavi)' ||
@@ -82,13 +81,12 @@ class ProductStream {
         .snapshots()
         .map(
       (querySnapshot) {
-        print(querySnapshot.docs.length);
         final shops = querySnapshot.docs
             .map((doc) => Shop.fromFirestore(doc))
             .where((shop) =>
                 shop.location.toLowerCase() == trimmedLocality.toLowerCase())
             .toList();
-        print(shops.first.shopName);
+
         return shops;
       },
     );

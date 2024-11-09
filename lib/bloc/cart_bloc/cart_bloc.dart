@@ -23,7 +23,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     String itemId = _uuid.v4();
     try {
       emit(CartLoading());
-      print("Enterd the bloc");
       await _firestore
           .collection('Users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -40,10 +39,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         'discountedPrice': event.product.discountedPrice,
         'cartItemId': itemId,
       });
-      emit(CartAddSuccessState());
-      print("Added successfully");
     } catch (error) {
-      print(error);
       emit(CartError(message: error.toString()));
     }
   }

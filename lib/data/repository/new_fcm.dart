@@ -26,7 +26,7 @@ class PushNotificationService {
       client,
     );
     client.close();
-    print("-----------token-> ${credentials.accessToken.data}");
+
     return credentials.accessToken.data;
   }
 
@@ -59,10 +59,6 @@ class PushNotificationService {
     );
 
     if (response.statusCode == 200) {
-      print("--------Notificaation Sent Successfully----------");
-    } else {
-      print(
-          "-------Failed notification ${response.statusCode}  body ${response.body}---------");
-    }
+    } else {}
   }
 }

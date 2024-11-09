@@ -35,13 +35,11 @@ class UserOrderRepository {
         "to": "$sellerFcmToken",
       };
 
-      var response = await http.post(Uri.parse(url),
+      await http.post(Uri.parse(url),
           headers: header, body: json.encode(request));
 
-      print(response.body);
       return true;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -88,12 +86,8 @@ class UserOrderRepository {
             order.orderId,
             'New Order Arrived',
             'Hurry up!! Process the order, your customer is waiting.');
-      } catch (e) {
-        print("error in push notification :------> $e");
-      }
-    } catch (e) {
-      print('Error placing order: $e');
-    }
+      } catch (e) {}
+    } catch (e) {}
   }
 
   Future<void> requestCancel(
@@ -103,27 +97,23 @@ class UserOrderRepository {
   ) async {
     String? sellerFcmToken;
     try {
-      print("Order Id : $orderId..... Reason: $reason");
       try {
         var doc = await _firestore
             .collection('orders')
             .where('orderId', isEqualTo: orderId)
             .get();
         doc.docs.first.reference.update({"cancellationReason": reason});
-      } catch (e) {
-        print("Error is in placing the new doc------> $e");
-      }
+      } catch (e) {}
 
       final shopdoc = await _firestore.collection('Shops').doc(shopId).get();
       sellerFcmToken = shopdoc['fcmToken'];
       await fmessaging.requestPermission();
 
-      final doc = await _firestore
+      await _firestore
           .collection('Users')
           .doc(userId)
           .collection('fcmToke')
           .get();
-      print(doc.size);
 
       try {
         PushNotificationService.sendNotificationToSelectedUser(
@@ -131,12 +121,8 @@ class UserOrderRepository {
             orderId,
             'Requested For Cancellation',
             'Process the order, your customer is waiting.');
-      } catch (e) {
-        print("error in push notification :------> $e");
-      }
-    } catch (e) {
-      print('Error cancelling order: $e');
-    }
+      } catch (e) {}
+    } catch (e) {}
   }
 
   Future<String?> getOrderId() async {
@@ -148,7 +134,7 @@ class UserOrderRepository {
           .doc("PendingOrder")
           .get();
       String orderId = orderIdDoc['orderId'];
-      print(orderId);
+
       return orderId;
     } catch (e) {
       return null;
@@ -162,9 +148,7 @@ class UserOrderRepository {
           .doc(userId)
           .collection('ShippingAddress')
           .add(address.toMap());
-    } catch (e) {
-      print('Error placing order: $e');
-    }
+    } catch (e) {}
   }
 
   Future<void> updateShippingAddress(Shipping address) async {
@@ -175,9 +159,7 @@ class UserOrderRepository {
           .collection('ShippingAddress')
           .get();
       snapshots.docs.first.reference.update(address.toMap());
-    } catch (e) {
-      print('Error placing order: $e');
-    }
+    } catch (e) {}
   }
 
   Stream<String?> getOrderStatusStream(String orderId) {

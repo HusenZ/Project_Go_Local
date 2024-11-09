@@ -10,7 +10,7 @@ class RatingRepo {
           .then(
         (querySnaps) {
           var doc = querySnaps.docs[0];
-          print('here is the doc Id of the Product----> ${doc.id}');
+
           return doc.id;
         },
       );
@@ -35,7 +35,6 @@ class RatingRepo {
         return '0.0';
       }
     } catch (error) {
-      print("Error fetching reviews: $error");
       return ' 0.0';
     }
   }
@@ -73,7 +72,6 @@ class RatingRepo {
         return '0.0';
       }
     } catch (error) {
-      print("Error fetching reviews: $error");
       return ' 0.0';
     }
   }

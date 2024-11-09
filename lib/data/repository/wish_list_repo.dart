@@ -18,8 +18,7 @@ class WishListRepo {
       final productDoc = querySnapshot.docs.first;
       return productDoc.data();
     } catch (error) {
-      print('Error fetching product details: $error');
-      return null; // Or throw an exception if desired behavior is different
+      return null;
     }
   }
 

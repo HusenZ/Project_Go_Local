@@ -33,8 +33,6 @@ class FirebaseLocation {
 
       return nearbyShops;
     } catch (e) {
-      // Handle errors here
-      print("Error fetching nearby shops: $e");
       return [];
     }
   }
@@ -62,8 +60,6 @@ class FirebaseLocation {
 
       return products;
     } catch (e) {
-      // Handle errors here
-      print("Error fetching products for shop $shopId: $e");
       return [];
     }
   }

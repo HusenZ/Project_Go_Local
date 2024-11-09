@@ -45,13 +45,11 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
           final productIdList =
               (snapshot.data()!['productIds'] as List<dynamic>?) ?? [];
           if (productIdList.contains(event.product.productId)) {
-            print(
-                'Product with ID ${event.product.productId} already exists in wishlist.');
             emit(ItemExists());
           }
         } else {
           // Add product ID to wishlist
-          print("Adding the value in the data base");
+
           await docRef.update({
             'productIds': FieldValue.arrayUnion([event.product.productId]),
           });
@@ -111,11 +109,6 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
       await docRef.update({
         'productIds': FieldValue.arrayRemove([product.productId]),
       });
-
-      print(
-          'Product with ID $product.productId removed from wishlist successfully.');
-    } on FirebaseException catch (e) {
-      print('Error removing product from wishlist: $e');
-    }
+    } on FirebaseException catch (e) {}
   }
 }

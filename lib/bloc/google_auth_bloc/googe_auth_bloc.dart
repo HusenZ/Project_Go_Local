@@ -30,12 +30,10 @@ class GoogleSignInBloc extends Bloc<GoogleSignInEvent, GoogleSignInState> {
           }
           emit(GoogleSignInSuccess());
         } else {
-          print("user is null--------> $user");
           emit(const GoogleSignInFailure(
               'An error occurred. Please try again.'));
         }
       } else {
-        print("sign up failure0000000");
         emit(const GoogleSignInFailure('Error logging in with Google'));
       }
     } catch (error) {

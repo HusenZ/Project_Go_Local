@@ -22,7 +22,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("Recived forground message: ${message.sentTime}");
       AwesomeNotifications().createNotification(
         content: NotificationContent(
           id: 123,
@@ -34,9 +33,7 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     });
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print("Notificatoin clicked: $message");
-    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {});
   }
 
   @override

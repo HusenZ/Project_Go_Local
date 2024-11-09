@@ -19,13 +19,11 @@ class SignUpApi {
         idToken: googleSignInAuthentication.idToken,
       );
       await _auth.signInWithCredential(credential);
-      print("Success ---------------");
+
       return true;
     } on FirebaseAuthException catch (e) {
-      print("Error in google sign is :----- ${e.message}");
-      throw e;
+      rethrow;
     } catch (e) {
-      print('error is here ----> $e');
       return false;
     }
   }
@@ -46,7 +44,6 @@ class SignUpApi {
         'email': email,
         'phone': '+91 $phone',
       });
-      print("User added to Firebase");
 
       // Return true to indicate success
 
@@ -70,7 +67,6 @@ class SignUpApi {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: '1er3t4y5u67');
       if (_auth.currentUser == null) {
-        print("Uesr is null");
         return false;
       } else {
         try {
@@ -84,26 +80,19 @@ class SignUpApi {
             'email': email,
             'phone': '+91 $phone',
           });
-          print("User added to Firebase");
 
           // Return true to indicate success
-          print("error is here $uid");
+
           return true;
         } catch (e) {
-          print('Error adding user: $e');
-
           // Return false to indicate failure
           return false;
         }
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('---------The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('-------The account already exists for that email.');
-      }
+      } else if (e.code == 'email-already-in-use') {}
     } catch (e) {
-      print(e);
       return false;
     }
     return false;

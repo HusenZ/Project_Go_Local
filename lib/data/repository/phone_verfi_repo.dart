@@ -36,7 +36,6 @@ class VerificationApi {
       await FirebaseAuth.instance.signInWithCredential(credential);
       return true;
     } catch (e) {
-      print('Error signing in with verification code: $e');
       return false;
     }
   }

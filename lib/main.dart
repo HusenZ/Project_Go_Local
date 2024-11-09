@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:gozip/bloc/cart_bloc/cart_bloc.dart';
 import 'package:gozip/bloc/google_auth_bloc/googe_auth_bloc.dart';
@@ -23,9 +25,13 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("$title, $body");
   AwesomeNotifications().createNotification(
     content: NotificationContent(
-      id: 10,
+      id: DateTime.now().millisecondsSinceEpoch,
       channelKey: 'channelkey',
       color: Colors.white,
+      title: title,
+      body: body,
+      notificationLayout: NotificationLayout.Default,
+      showWhen: true,
       category: NotificationCategory.Event,
       wakeUpScreen: true,
     ),
@@ -37,22 +43,24 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  AwesomeNotifications().initialize(
+    'gozip',
+    [
+      NotificationChannel(
+        channelKey: 'channelkey',
+        channelName: 'IMPORTANCE_HIGH',
+        channelDescription: 'channelDescription',
+        importance: NotificationImportance.High,
+        defaultRingtoneType: DefaultRingtoneType.Notification,
+        vibrationPattern: Int64List.fromList([1000, 500, 1000]),
+        channelShowBadge: true,
+        enableVibration: true,
+      )
+    ],
+  );
   FirebaseMessaging.onBackgroundMessage(
       (message) => _firebaseMessagingBackgroundHandler(message));
   await FirebaseAppCheck.instance.activate();
-  AwesomeNotifications().initialize(null, [
-    NotificationChannel(
-      channelKey: 'channelkey',
-      channelName: 'notify_channel',
-      channelDescription: 'channelDescription',
-      importance: NotificationImportance.Max,
-      locked: true,
-      ledColor: Colors.white,
-      defaultRingtoneType: DefaultRingtoneType.Notification,
-      channelShowBadge: true,
-      enableVibration: true,
-    )
-  ]);
 
   final preferences = await SharedPreferences.getInstance();
 

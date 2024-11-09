@@ -7,14 +7,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ConnectivityHelper {
   static Future<void> replaceIfConnected(BuildContext context, String route,
       {Object? args}) async {
-    final ConnectivityResult connectivityResult =
+    final List<ConnectivityResult> connectivityResult =
         await Connectivity().checkConnectivity();
-    final isConnected = connectivityResult != ConnectivityResult.none;
+    final isConnected = connectivityResult.first != ConnectivityResult.none;
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setBool('isConnected', isConnected);
 
-    if (connectivityResult != ConnectivityResult.none) {
+    if (connectivityResult.first != ConnectivityResult.none) {
       // If connected, navigate to the specified route
       Navigator.of(context).pushReplacementNamed(route, arguments: args);
     } else {
@@ -24,22 +24,22 @@ class ConnectivityHelper {
   }
 
   static Future<bool> checkConnection() async {
-    final ConnectivityResult connectivityResult =
+    final List<ConnectivityResult> connectivityResult =
         await Connectivity().checkConnectivity();
-    final isConnected = connectivityResult != ConnectivityResult.none;
+    final isConnected = connectivityResult.first != ConnectivityResult.none;
     return isConnected;
   }
 
   static Future<void> clareStackPush(BuildContext context, String route,
       {Object? args}) async {
-    final ConnectivityResult connectivityResult =
+    final List<ConnectivityResult> connectivityResult =
         await Connectivity().checkConnectivity();
-    final isConnected = connectivityResult != ConnectivityResult.none;
+    final isConnected = connectivityResult.first != ConnectivityResult.none;
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setBool('isConnected', isConnected);
 
-    if (connectivityResult != ConnectivityResult.none) {
+    if (connectivityResult.first != ConnectivityResult.none) {
       Navigator.of(context).pushNamedAndRemoveUntil(route, (route) => false);
     } else {
       Navigator.of(context)
@@ -49,16 +49,18 @@ class ConnectivityHelper {
 
   static Future<void> naviagte(BuildContext context, String route,
       {Object? args}) async {
-    final ConnectivityResult connectivityResult =
+    final List<ConnectivityResult> connectivityResult =
         await Connectivity().checkConnectivity();
-    final isConnected = connectivityResult != ConnectivityResult.none;
+    final isConnected = connectivityResult.first != ConnectivityResult.none;
 
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setBool('isConnected', isConnected);
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // preferences.setBool('isConnected', isConnected);
 
-    if (connectivityResult != ConnectivityResult.none) {
+    if (isConnected) {
       // If connected, navigate to the specified route
-      Navigator.of(context).pushNamed(route, arguments: args);
+      if (context.mounted) {
+        Navigator.of(context).pushNamed(route, arguments: args);
+      }
     } else {
       // If not connected, show the no internet screen
       Navigator.of(context).pushNamed(Routes.noInternetRoute);
@@ -66,14 +68,14 @@ class ConnectivityHelper {
   }
 
   static Future<void> popIfConnected(BuildContext context) async {
-    final ConnectivityResult connectivityResult =
+    final List<ConnectivityResult> connectivityResult =
         await Connectivity().checkConnectivity();
-    final isConnected = connectivityResult != ConnectivityResult.none;
+    final isConnected = connectivityResult.first != ConnectivityResult.none;
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setBool('isConnected', isConnected);
 
-    if (connectivityResult != ConnectivityResult.none) {
+    if (connectivityResult.first != ConnectivityResult.none) {
       // If connected, navigate to the specified route
       Navigator.of(context).pop();
     } else {

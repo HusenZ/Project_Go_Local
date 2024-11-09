@@ -16,10 +16,7 @@ class UserUpdateBloc extends Bloc<UserUpdateEvent, UserUpdateState> {
     on<UpdateUserEvent>((event, emit) async {
       try {
         emit(UserUpdateLoading());
-        print("In bloc");
         FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-        print("Updated Event value ------> ${event.name} ${event.email}");
         await firestore
             .collection('Users')
             .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -28,8 +25,6 @@ class UserUpdateBloc extends Bloc<UserUpdateEvent, UserUpdateState> {
           'name': event.name,
           'phone': event.phone,
         });
-        print("User Updated!");
-
         emit(UserUpdateSuccess());
         @override
         Future<void> close() {
@@ -37,7 +32,6 @@ class UserUpdateBloc extends Bloc<UserUpdateEvent, UserUpdateState> {
           return super.close();
         }
       } catch (e) {
-        print("Some error occurred $e");
         emit(const UserUpdateFailure("Failed to update user."));
       }
     });
